@@ -768,27 +768,23 @@
       }
 
       if (CONFIG.PLAYERS[playerName] !== pin) {
-        errorEl.textContent = 'Incorrect PIN. Try again.';
-        errorEl.style.display = 'block';
-        return;
-      }
+    errorEl.textContent = 'Incorrect PIN. Try again.';
+    errorEl.style.display = 'block';
+    return;
+  }
 
-      errorEl.style.display = 'none';
-      currentPlayer = playerName;
+  // Show loading IMMEDIATELY
+  const loginBtn = document.getElementById('loginBtn');
+  loginBtn.disabled = true;
+  loginBtn.innerHTML = '<span class="spinner"></span> Loading...';
+
+  errorEl.style.display = 'none';
+  currentPlayer = playerName;
 
       // Load existing picks if any
       await loadExistingPicks();
 
       showPicksSection();
-    }
-
-    function handleLogout() {
-      currentPlayer = null;
-      picks = {};
-      existingPicks = null;
-      document.getElementById('pinInput').value = '';
-      document.getElementById('loginSection').style.display = 'block';
-      document.getElementById('picksSection').classList.remove('active');
     }
 
     // ============================================
