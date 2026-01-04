@@ -765,13 +765,12 @@
         <p>See who picked what for each game</p>
       </div>
       
-      <div id="allPicksContainer"></div>
-      
-      <div class="copy-whatsapp-section">
-        <h3>📱 Share to WhatsApp</h3>
-        <div class="whatsapp-preview" id="whatsappPreview">Loading...</div>
-        <button class="btn btn-whatsapp" id="copyWhatsAppBtn">📋 Copy to Clipboard</button>
-      </div>
+      <div id="allPicksContainer">
+  <div style="text-align: center; padding: 40px;">
+    <div class="spinner" style="width: 30px; height: 30px; border-width: 3px;"></div>
+    <p style="color: var(--text-muted); margin-top: 12px;">Loading picks...</p>
+  </div>
+</div>
     </section>
   </div>
 
@@ -942,7 +941,6 @@
   // Show the View All Picks section
   document.getElementById('viewPicksSection').classList.add('active');
   loadAndDisplayAllPicks();
-  setupWhatsAppCopy();
 }
 
     // ============================================
@@ -1227,7 +1225,6 @@
 // ============================================
 async function loadAndDisplayAllPicks() {
   const container = document.getElementById('allPicksContainer');
-  const whatsappPreview = document.getElementById('whatsappPreview');
   
   document.getElementById('viewPicksWeek').textContent = CONFIG.WEEK;
   
@@ -1243,7 +1240,6 @@ async function loadAndDisplayAllPicks() {
     
     // Render game cards
     let html = '';
-    let whatsappText = `🏈 WEEK ${CONFIG.WEEK} PICKS 🏈\n`;
     
     CONFIG.GAMES.forEach((game, index) => {
       const homePickers = [];
@@ -1295,15 +1291,9 @@ async function loadAndDisplayAllPicks() {
           </div>
         </div>
       `;
-      
-      // WhatsApp format
-      whatsappText += `\n${game.away} @ ${game.home}${game.doublePoints ? ' ⭐' : ''}\n`;
-      whatsappText += `• ${homeShort} → ${homePickers.join(', ') || 'None'}\n`;
-      whatsappText += `• ${awayShort} → ${awayPickers.join(', ') || 'None'}\n`;
     });
     
     container.innerHTML = html;
-    whatsappPreview.textContent = whatsappText.trim();
     
   } catch (err) {
     console.error('Error loading picks:', err);
@@ -1317,21 +1307,6 @@ async function loadAndDisplayAllPicks() {
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-function setupWhatsAppCopy() {
-  const btn = document.getElementById('copyWhatsAppBtn');
-  btn.addEventListener('click', () => {
-    const text = document.getElementById('whatsappPreview').textContent;
-    navigator.clipboard.writeText(text).then(() => {
-      btn.textContent = '✓ Copied!';
-      btn.classList.add('copied');
-      setTimeout(() => {
-        btn.textContent = '📋 Copy to Clipboard';
-        btn.classList.remove('copied');
-      }, 2000);
-    });
-  });
 }
 
     // Start the app
