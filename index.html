@@ -492,6 +492,208 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+
+    /* ============================================
+   VIEW ALL PICKS SECTION (Post-Deadline)
+   ============================================ */
+.view-picks-section {
+  display: none;
+  margin-top: 30px;
+}
+
+.view-picks-section.active {
+  display: block;
+}
+
+.view-picks-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.view-picks-header h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.8rem;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.view-picks-header p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.game-picks-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.game-picks-card.double-points {
+  border-color: var(--gold);
+}
+
+.game-picks-card.double-points .game-picks-header::after {
+  content: '⭐ DOUBLE POINTS';
+  font-size: 0.7rem;
+  color: var(--gold);
+  margin-left: 12px;
+  letter-spacing: 1px;
+}
+
+.game-picks-header {
+  background: var(--bg-game);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.game-picks-header img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.game-picks-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.game-picks-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.team-pickers {
+  padding: 16px 20px;
+}
+
+.team-pickers:first-child {
+  border-right: 1px solid var(--border);
+}
+
+.team-pickers-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.team-pickers-label img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.team-pickers-label span {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.team-pickers-count {
+  background: var(--gold);
+  color: var(--bg-dark);
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: auto;
+}
+
+.pickers-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.picker-chip {
+  background: var(--bg-game);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.picker-chip.empty {
+  color: var(--text-muted);
+  font-style: italic;
+  border-style: dashed;
+}
+
+.copy-whatsapp-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 24px;
+  text-align: center;
+}
+
+.copy-whatsapp-section h3 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1rem;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.whatsapp-preview {
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: left;
+  white-space: pre-wrap;
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 16px;
+  user-select: all;
+}
+
+.btn-whatsapp {
+  background: #25D366;
+  color: white;
+}
+
+.btn-whatsapp:hover {
+  background: #20bd5a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
+}
+
+.btn-whatsapp.copied {
+  background: var(--green);
+}
+
+@media (max-width: 600px) {
+  .game-picks-body {
+    grid-template-columns: 1fr;
+  }
+  
+  .team-pickers:first-child {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .game-picks-header {
+    flex-wrap: wrap;
+  }
+}
   </style>
 </head>
 <body>
@@ -555,6 +757,22 @@
       <h2>⏰ Picks Are Closed</h2>
       <p>The deadline has passed. Better luck next week!</p>
     </section>
+
+    <!-- View All Picks Section (shows after deadline) -->
+    <section class="view-picks-section" id="viewPicksSection">
+      <div class="view-picks-header">
+        <h2>📋 Week <span id="viewPicksWeek"></span> Picks</h2>
+        <p>See who picked what for each game</p>
+      </div>
+      
+      <div id="allPicksContainer"></div>
+      
+      <div class="copy-whatsapp-section">
+        <h3>📱 Share to WhatsApp</h3>
+        <div class="whatsapp-preview" id="whatsappPreview">Loading...</div>
+        <button class="btn btn-whatsapp" id="copyWhatsAppBtn">📋 Copy to Clipboard</button>
+      </div>
+    </section>
   </div>
 
   <script>
@@ -572,7 +790,7 @@
       // Deadline: Sunday 6:00 PM UK time (18:00)
       // Format: 'YYYY-MM-DDTHH:MM:SS' in UK time
       // The system adds a 10-minute grace period automatically
-      DEADLINE: '2026-01-04T18:00:00', // Change this each week
+      DEADLINE: '2026-01-03T18:00:00', // Change this each week
       GRACE_PERIOD_MINUTES: 10,
       
       // Players and their PINs (keep this secret!)
@@ -717,10 +935,15 @@
     }
 
     function showClosedState() {
-      document.getElementById('loginSection').style.display = 'none';
-      document.getElementById('picksSection').classList.remove('active');
-      document.getElementById('closedSection').style.display = 'block';
-    }
+  document.getElementById('loginSection').style.display = 'none';
+  document.getElementById('picksSection').classList.remove('active');
+  document.getElementById('closedSection').style.display = 'block';
+  
+  // Show the View All Picks section
+  document.getElementById('viewPicksSection').classList.add('active');
+  loadAndDisplayAllPicks();
+  setupWhatsAppCopy();
+}
 
     // ============================================
     // UI INITIALIZATION
@@ -998,6 +1221,118 @@
         btnText.textContent = 'Submit Picks';
       }
     }
+
+    // ============================================
+// VIEW ALL PICKS (Post-Deadline)
+// ============================================
+async function loadAndDisplayAllPicks() {
+  const container = document.getElementById('allPicksContainer');
+  const whatsappPreview = document.getElementById('whatsappPreview');
+  
+  document.getElementById('viewPicksWeek').textContent = CONFIG.WEEK;
+  
+  try {
+    const response = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.JSONBIN_BIN_ID}/latest`, {
+      headers: { 'X-Access-Key': CONFIG.JSONBIN_API_KEY }
+    });
+    
+    if (!response.ok) throw new Error('Failed to load picks');
+    
+    const data = await response.json();
+    const allPicks = data.record?.picks || {};
+    
+    // Render game cards
+    let html = '';
+    let whatsappText = `🏈 WEEK ${CONFIG.WEEK} PICKS 🏈\n`;
+    
+    CONFIG.GAMES.forEach((game, index) => {
+      const homePickers = [];
+      const awayPickers = [];
+      
+      Object.keys(allPicks).forEach(player => {
+        const pick = allPicks[player]?.[index];
+        if (pick === game.home) {
+          homePickers.push(capitalize(player));
+        } else if (pick === game.away) {
+          awayPickers.push(capitalize(player));
+        }
+      });
+      
+      const awayShort = game.away.split(' ').pop();
+      const homeShort = game.home.split(' ').pop();
+      
+      html += `
+        <div class="game-picks-card${game.doublePoints ? ' double-points' : ''}">
+          <div class="game-picks-header">
+            <img src="${TEAM_LOGOS[game.away]}" alt="" onerror="this.style.display='none'">
+            <span class="game-picks-title">${awayShort} @ ${homeShort}</span>
+          </div>
+          <div class="game-picks-body">
+            <div class="team-pickers">
+              <div class="team-pickers-label">
+                <img src="${TEAM_LOGOS[game.away]}" alt="" onerror="this.style.display='none'">
+                <span>${awayShort}</span>
+                <span class="team-pickers-count">${awayPickers.length}</span>
+              </div>
+              <div class="pickers-list">
+                ${awayPickers.length > 0 
+                  ? awayPickers.map(p => `<span class="picker-chip">${p}</span>`).join('')
+                  : '<span class="picker-chip empty">None</span>'}
+              </div>
+            </div>
+            <div class="team-pickers">
+              <div class="team-pickers-label">
+                <img src="${TEAM_LOGOS[game.home]}" alt="" onerror="this.style.display='none'">
+                <span>${homeShort}</span>
+                <span class="team-pickers-count">${homePickers.length}</span>
+              </div>
+              <div class="pickers-list">
+                ${homePickers.length > 0 
+                  ? homePickers.map(p => `<span class="picker-chip">${p}</span>`).join('')
+                  : '<span class="picker-chip empty">None</span>'}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // WhatsApp format
+      whatsappText += `\n${game.away} @ ${game.home}${game.doublePoints ? ' ⭐' : ''}\n`;
+      whatsappText += `• ${homeShort} → ${homePickers.join(', ') || 'None'}\n`;
+      whatsappText += `• ${awayShort} → ${awayPickers.join(', ') || 'None'}\n`;
+    });
+    
+    container.innerHTML = html;
+    whatsappPreview.textContent = whatsappText.trim();
+    
+  } catch (err) {
+    console.error('Error loading picks:', err);
+    container.innerHTML = `
+      <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+        <p>Unable to load picks. Please refresh the page.</p>
+      </div>
+    `;
+  }
+}
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function setupWhatsAppCopy() {
+  const btn = document.getElementById('copyWhatsAppBtn');
+  btn.addEventListener('click', () => {
+    const text = document.getElementById('whatsappPreview').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = '📋 Copy to Clipboard';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  });
+}
 
     // Start the app
     init();
